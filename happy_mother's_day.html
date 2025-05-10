@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For My Subbu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Open+Sans:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      background: #ffe6f2;
+      color: #333;
+      overflow-x: hidden;
+      min-height: 100vh;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="200" viewBox="0 0 100 200"><path d="M30,30 Q40,20 50,30 T70,30 Q80,40 70,50 T70,70 Q60,80 50,70 T30,70 Q20,60 30,50 T30,30" fill="%23ffccd5" opacity="0.5" /></svg>');
+      background-size: 100px 100px;
+    }
+
+    .scene {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      padding: 40px 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.5s ease;
+      background: #ffe6f2;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="200" viewBox="0 0 100 200"><path d="M30,30 Q40,20 50,30 T70,30 Q80,40 70,50 T70,70 Q60,80 50,70 T30,70 Q20,60 30,50 T30,30" fill="%23ffccd5" opacity="0.5" /></svg>');
+      background-size: 100px 100px;
+    }
+
+    .active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    h1, h2 {
+      font-family: 'Dancing Script', cursive;
+      color: #d6336c;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #e60073, 0 0 20px #e60073;
+      }
+      to {
+        text-shadow: 0 0 10px #fff, 0 0 20px #ff4da6, 0 0 30px #ff4da6, 0 0 40px #ff4da6;
+      }
+    }
+
+    h1 {
+      font-size: 3.5em;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 2.2em;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.3em;
+      text-align: center;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .button {
+      margin-top: 30px;
+      padding: 12px 30px;
+      background: linear-gradient(to right, #d6336c, #f06595);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.2em;
+      cursor: pointer;
+      font-family: 'Dancing Script', cursive;
+      box-shadow: 0 4px 15px rgba(214, 51, 108, 0.4);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 7px 20px rgba(214, 51, 108, 0.6);
+    }
+
+    .button:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .button:hover:before {
+      left: 100%;
+    }
+
+    img {
+      width: 90%;
+      max-width: 200px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      border: 5px solid white;
+    }
+
+    img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    }
+
+    .letter {
+      font-size: 1.3em;
+      font-family: 'Dancing Script', cursive;
+      line-height: 1.8em;
+      color: #6a1b4d;
+      max-width: 700px;
+      text-align: center;
+      position: relative;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    .pen {
+      display: none; /* Hide the pen element */
+    }
+
+    .floating-heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      opacity: 0.9;
+      transform: rotate(45deg);
+      animation: float 6s linear infinite;
+      z-index: 0;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .floating-heart.pink {
+      background: linear-gradient(135deg, #ff8fb1, #ff5c8a);
+    }
+
+    .floating-heart.blue {
+      background: linear-gradient(135deg, #a5c8ff, #7ba4ff);
+    }
+
+    .floating-heart::before,
+    .floating-heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+    }
+
+    .floating-heart.pink::before,
+    .floating-heart.pink::after {
+      background: linear-gradient(135deg, #ff8fb1, #ff5c8a);
+    }
+
+    .floating-heart.blue::before,
+    .floating-heart.blue::after {
+      background: linear-gradient(135deg, #a5c8ff, #7ba4ff);
+    }
+
+    .floating-heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .floating-heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(45deg); opacity: 0.7; }
+      100% { transform: translateY(-800px) rotate(45deg); opacity: 0; }
+    }
+
+    .scene4-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding: 0 20px;
+    }
+
+    @media (min-width: 768px) {
+      .scene4-content {
+        flex-direction: row;
+        justify-content: space-around;
+      }
+    }
+
+    .scene4-content img {
+      max-width: 200px;
+      transition: transform 0.5s ease-in-out;
+      margin: 15px;
+    }
+
+    .scene4-content img:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .scene4-text {
+      font-size: 1.5em;
+      color: #d6336c;
+      animation: fadeIn 10s ease forwards;
+      text-align: center;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      margin: 20px 0;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .photo-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .photo-gallery img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .photo-gallery img:hover {
+      transform: scale(1.15) rotate(3deg);
+      z-index: 1;
+    }
+
+    .heartbeat {
+      animation: heartbeat 10s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.1); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .flower {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0.8;
+      z-index: 0;
+    }
+
+    .music-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      background: rgba(255,255,255,0.8);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+
+    .music-control i {
+      font-size: 24px;
+      color: #d6336c;
+    }
+
+    .quote {
+      font-style: italic;
+      color: #6a1b4d;
+      max-width: 80%;
+      margin: 20px auto;
+      text-align: center;
+      font-size: 1.2em;
+    }
+
+    .highlight {
+      color: #d6336c;
+      font-weight: bold;
+    }
+
+    .memory-box {
+      background: rgba(255,255,255,0.9);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      max-width: 300px;
+    }
+
+    .memory-box:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .memory-title {
+      font-family: 'Dancing Script', cursive;
+      color: #d6336c;
+      font-size: 1.5em;
+      margin-bottom: 10px;
+    }
+
+    .memory-text {
+      font-size: 1em;
+      line-height: 1.5;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <!-- Audio Element for Background Music -->
+  <audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Music Control Button -->
+  <div class="music-control" onclick="toggleMusic()">
+    <i class="fas fa-volume-up" id="musicIcon"></i>
+  </div>
+
+  <!-- Scene 1: Welcome Screen with Animated Hearts -->
+  <div class="scene active" id="scene1">
+    <h1>Happy Mother's Day,Amma</h1>
+    <div class="heartbeat">❤️</div>
+    <p>A special surprise just for you, the most amazing mother in the world</p>
+    <p>Tap to begin this journey of love...</p>
+    <button class="button" onclick="nextScene()">Lets begin</button>
+  </div>
+
+  <!-- Scene 2: Photo and Message -->
+  <div class="scene" id="scene2">
+    <h2>My Forever Support System</h2>
+    <img src="mom_photo.jpg"alt="Mother and Child">
+    <div class="quote">
+      A mother's love is the fuel that enables a normal human being to do the impossible. 
+    </div>
+    <p>Thank you for being my <span class="highlight">strength</span>, my <span class="highlight">guide</span>, and my <span class="highlight">best friend</span>.</p>
+    <button class="button" onclick="nextScene()">What next</button>
+  </div>
+
+  <!-- Scene 3: Animated Letter -->
+  <div class="scene" id="scene3">
+    <div class="letter" id="letter">
+      <span id="typedText"></span>
+    </div>
+    <button class="button" id="nextButton" style="display:none;" onclick="nextScene()">Continue to Memories</button>
+  </div>
+
+  <!-- Scene 4: Memory Gallery -->
+  <div class="scene" id="scene4">
+    <h2>My Support System</h2>
+    <div class="photo-gallery">
+      <img src="amma1.jpg" alt="Memory 1">
+      <img src="amma2.jpg" alt="Memory 2">
+      <img src="amma3.jpg" alt="Memory 3">
+      <img src="amma4.jpg" alt="Memory 4">
+    </div>
+    <div class="quote">
+      LOVE YOU TO THE CORE
+    </div>
+    <button class="button" onclick="nextScene()">Continue</button>
+  </div>
+
+  <!-- Scene 5: Special Moments -->
+  <div class="scene" id="scene5">
+    <h2>Special Moments with You</h2>
+    <div class="scene4-content">
+      <div class="memory-box">
+        <div class="memory-title">Your Cooking</div>
+        <p class="memory-text">No one can ever match the taste of your cooking. The love you put into every dish makes it special.</p>
+      </div>
+      <div class="memory-box">
+        <div class="memory-title">Your Smile</div>
+        <p class="memory-text">Your smile brightens my darkest days. It's the most beautiful thing in the world to me.</p>
+      </div>
+      <div class="memory-box">
+        <div class="memory-title">Your Strength</div>
+        <p class="memory-text">You've shown me what true strength is. Through every challenge, you've remained unbreakable.</p>
+      </div>
+    </div>
+    <button class="button" onclick="nextScene()">final</button>
+  </div>
+
+  <!-- Scene 6: Final Message -->
+  <div class="scene" id="scene6">
+    <div class="scene4-content">
+      <div class="scene4-text">
+        <h2><strong>Love you more than words can express...</strong></h2>
+        <div>
+          Thank you for everything you do,Amma. Your love is the greatest gift I've ever received.
+          <br><br>
+          ❤️ Forever Your Little One ❤️
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <!-- Initialize when document is loaded -->
+  <script>
+    // Global variables
+    let current = 1;
+    const totalScenes = 6;
+    const bgMusic = document.getElementById('bgMusic');
+    const musicIcon = document.getElementById('musicIcon');
+    let musicPlaying = false;
+
+    // Initialize when document is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Create initial floating hearts
+      setInterval(createHeart, 300); // Create hearts more frequently
+      
+      // Create random flowers in the background
+      createFlowers();
+      
+      // Preload images for better performance
+      preloadImages();
+    });
+
+    // Function to toggle background music
+    function toggleMusic() {
+      if (musicPlaying) {
+        bgMusic.pause();
+        musicIcon.className = 'fas fa-volume-mute';
+        musicPlaying = false;
+      } else {
+        bgMusic.play().catch(e => {
+          console.log("Audio play failed:", e);
+          alert("Please interact with the page first to enable music!");
+        });
+        musicIcon.className = 'fas fa-volume-up';
+        musicPlaying = true;
+      }
+    }
+
+    // Function to navigate between scenes
+    function nextScene() {
+      // Start music on first interaction if not already playing
+      if (!musicPlaying) {
+        toggleMusic();
+      }
+      
+      // Hide current scene
+      document.getElementById("scene" + current).classList.remove("active");
+      
+      // Move to next scene
+      current++;
+      
+      // Show next scene
+      const next = document.getElementById("scene" + current);
+      if (next) next.classList.add("active");
+      
+      // Scene-specific actions
+      if (current === 2) {
+        // More hearts for scene 2
+        setInterval(createHeart, 150); // Even more hearts
+      }
+      if (current === 3) {
+        // Start typing animation
+        startTyping();
+      }
+      if (current === 4) {
+        // Launch confetti for memory gallery
+        launchSurprise();
+      }
+      if (current === 6) {
+        // Final scene celebration
+        launchSurprise();
+        setInterval(launchSurprise, 3000);
+        createManyHearts();
+      }
+    }
+
+    // Create floating hearts animation
+    function createHeart() {
+      const heart = document.createElement('div');
+      // Randomly choose between pink and blue hearts
+      const color = Math.random() > 0.5 ? 'pink' : 'blue';
+      heart.className = `floating-heart ${color}`;
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = 3 + Math.random() * 5 + 's';
+      heart.style.opacity = 0.5 + Math.random() * 0.5;
+      heart.style.transform = `scale(${0.3 + Math.random() * 0.4}) rotate(45deg)`;  // Make hearts smaller
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    // Create many hearts for final scene
+    function createManyHearts() {
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          // Randomly choose between pink and blue hearts
+          const color = Math.random() > 0.5 ? 'pink' : 'blue';
+          heart.className = `floating-heart ${color}`;
+          heart.style.left = Math.random() * 100 + 'vw';
+          heart.style.animationDuration = 3 + Math.random() * 5 + 's';
+          heart.style.opacity = 0.5 + Math.random() * 0.5;
+          heart.style.transform = `scale(${0.3 + Math.random() * 0.4}) rotate(45deg)`;
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 6000);
+        }, i * 100);
+      }
+    }
+
+    // Create decorative flowers in the background
+    function createFlowers() {
+      const flowerUrls = [
+        'https://cdn-icons-png.flaticon.com/512/1164/1164620.png',
+        'https://cdn-icons-png.flaticon.com/512/2518/2518048.png',
+        'https://cdn-icons-png.flaticon.com/512/1164/1164621.png'
+      ];
+      
+      for (let i = 0; i < 15; i++) {
+        const flower = document.createElement('div');
+        flower.className = 'flower';
+        flower.style.backgroundImage = `url(${flowerUrls[Math.floor(Math.random() * flowerUrls.length)]})`;
+        flower.style.left = Math.random() * 100 + 'vw';
+        flower.style.top = Math.random() * 100 + 'vh';
+        flower.style.opacity = 0.2 + Math.random() * 0.3;
+        flower.style.transform = `rotate(${Math.random() * 360}deg) scale(${0.5 + Math.random() * 0.5})`;
+        document.body.appendChild(flower);
+      }
+    }
+
+    // Launch confetti celebration
+    function launchSurprise() {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#ff5c8a', '#ff8fb1', '#d6336c', '#ffccd5', '#ffe6ec']
+      });
+    }
+
+    // Preload images for better performance
+    function preloadImages() {
+      const imageUrls = [
+        'https://cdn-icons-png.flaticon.com/512/2919/2919922.png',
+        'https://cdn-icons-png.flaticon.com/512/1164/1164620.png',
+        'https://cdn-icons-png.flaticon.com/512/2518/2518048.png',
+        'https://cdn-icons-png.flaticon.com/512/1164/1164621.png',
+        'https://images.unsplash.com/photo-1609220136736-443140cffec6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+        'https://images.unsplash.com/photo-1492725764893-90b379c2b6e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+        'https://images.unsplash.com/photo-1591604466107-ec97de577aff?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+        'https://images.unsplash.com/photo-1577639673047-ddc3d9d1a4b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+        'https://images.unsplash.com/photo-1520854221256-17451cc331bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
+      ];
+      
+      imageUrls.forEach(url => {
+        const img = new Image();
+        img.src = url;
+      });
+    }
+
+    // Typing effect for Scene 3
+    const letterText = `My Dearest Amma,
+
+You are not just my mother💓🫀you are my heartbeat. Your love has been my shelter, your wisdom my guide, and your strength my inspiration.
+
+You've always been there - through my tears and smiles, through my failures and victories.
+
+Sometimes I wonder how you hold so much strength in your heart while giving away so much love without expecting anything in return.
+
+You are the first person I think of when I’m scared, the one I miss when I’m hurt, and the one who makes me feel safe just by being there.
+
+You’ve carried me not just in your womb, but in your prayers, your worries, and your dreams.
+
+Every sacrifice you’ve made, every tear you’ve hidden, and every smile you’ve worn just to keep me strong, I see it now.
+
+I know I’ve not always been the best daughter, and I may not have said it enough, but you are my everything. You are the reason I believe in love, in kindness, and in the beauty of life.
+
+You taught me to be strong yet kind, to stand tall yet remain humble, to dream big yet stay grounded. Everything good in me comes from you.
+
+When I look at you, I see a woman of incredible strength, boundless love, and unwavering faith. You are not just my mother; you are my first teacher, my confidante, my best friend.
+
+On this Mother's Day, I want you to know that you are cherished beyond measure. Your love has shaped my world in ways words cannot express.
+
+I promise to make you proud, to carry forward your legacy of love and kindness, and to always be there for you just as you've been there for me.
+
+Thank you for being the extraordinary woman you are. Amma, You are the reason I strive to be better every day.
+
+With all my love and gratitude,
+Your child who adores you more than words can say ❤️`;
+
+    let index = 0;
+    let typingInterval;
+    const typedText = document.getElementById('typedText');
+    const nextButton = document.getElementById('nextButton');
+
+    // Start the typing animation
+    function startTyping() {
+      typedText.textContent = '';
+      index = 0;
+      typingInterval = setInterval(typeLetter, 50);
+      
+      // Show the next button after a delay to ensure it appears even if typing doesn't complete
+      setTimeout(() => {
+        nextButton.style.display = 'block';
+      }, letterText.length * 50 + 1000); // Ensure button appears after typing should complete
+    }
+
+    // Type each letter with animation
+    function typeLetter() {
+      if (index < letterText.length) {
+        const char = letterText.charAt(index);
+        typedText.innerHTML += (char === '\n') ? '<br>' : char;
+        index++;
+
+        // Scroll the letter container
+        typedText.parentElement.scrollTop = typedText.parentElement.scrollHeight;
+      } else if (index === letterText.length) {
+        clearInterval(typingInterval);
+        nextButton.style.display = 'block';
+      } else if (index > letterText.length) {
+        clearInterval(typingInterval);
+        nextButton.style.display = 'block';
+      } else {
+        clearInterval(typingInterval);
+        nextButton.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>
